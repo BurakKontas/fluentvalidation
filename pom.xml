@@ -63,6 +63,29 @@
         <aspectj.version>1.9.25.1</aspectj.version>
     </properties>
 
+    <!-- ========= DEPENDENCY MANAGEMENT ========= -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Spring Boot BOM -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Internal modules -->
+            <dependency>
+                <groupId>tr.kontas.fluentvalidation</groupId>
+                <artifactId>fluentvalidation-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
     <!-- ========= BUILD ========= -->
     <build>
         <pluginManagement>
