@@ -15,6 +15,28 @@
         <aspectj.version>1.9.25.1</aspectj.version>
     </properties>
 
+    <licenses>
+        <license>
+            <name>GPL-3.0 license</name>
+            <url>https://github.com/BurakKontas/fluentvalidation/blob/main/LICENSE.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Arda Burak Kontaş</name>
+            <email>aburakkontas@hotmail.com</email>
+            <organization>BurakKontas</organization>
+            <organizationUrl>https://github.com/BurakKontas</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/BurakKontas/fluentvalidation.git</connection>
+        <developerConnection>scm:git:ssh://github.com/BurakKontas/fluentvalidation.git</developerConnection>
+        <url>https://github.com/BurakKontas/fluentvalidation/tree/main</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>tr.kontas.fluentvalidation</groupId>
