@@ -115,6 +115,34 @@ public class RuleBuilder<T, R> {
         );
     }
 
+    public RuleBuilder<T, R> containsUppercase() {
+        return must(
+                v -> v != null && v.toString().chars().anyMatch(Character::isUpperCase),
+                "must contain at least one uppercase letter"
+        );
+    }
+
+    public RuleBuilder<T, R> containsLowercase() {
+        return must(
+                v -> v != null && v.toString().chars().anyMatch(Character::isLowerCase),
+                "must contain at least one lowercase letter"
+        );
+    }
+
+    public RuleBuilder<T, R> containsDigit() {
+        return must(
+                v -> v != null && v.toString().chars().anyMatch(Character::isDigit),
+                "must contain at least one digit"
+        );
+    }
+
+    public RuleBuilder<T, R> containsSpecialChar() {
+        return must(
+                v -> v != null && v.toString().chars().anyMatch(ch -> !Character.isLetterOrDigit(ch)),
+                "must contain at least one special character"
+        );
+    }
+
     public RuleBuilder<T, R> matches(String regex) {
         return matches(Pattern.compile(regex));
     }
