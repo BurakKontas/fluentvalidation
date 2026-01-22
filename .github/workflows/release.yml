@@ -30,6 +30,7 @@ jobs:
           echo "Username length: ${#MAVEN_USERNAME}"
           echo "Password length: ${#MAVEN_PASSWORD}"
           echo "Username starts with: ${MAVEN_USERNAME:0:4}..."
+          echo "=== settings.xml content ==="
           cat ~/.m2/settings.xml
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
