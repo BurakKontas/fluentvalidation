@@ -43,8 +43,6 @@ jobs:
             </profiles>
           </settings>
           EOF
-          echo "=== settings.xml created ==="
-          cat ~/.m2/settings.xml
 
       - name: Import GPG key
         run: |
