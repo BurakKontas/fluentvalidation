@@ -1,15 +1,16 @@
 package tr.kontas.fluentvalidation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ValidationResult {
 
-    private final List<String> errors = new ArrayList<>();
+    private final List<FieldError> errors = new ArrayList<>();
 
-    public void addError(String error) {
-        errors.add(error);
+    public void addError(String property, String message) {
+        errors.add(new FieldError(property, message));
     }
 
     public boolean isValid() {
@@ -20,8 +21,8 @@ public class ValidationResult {
         return !isValid();
     }
 
-    public List<String> getErrors() {
-        return errors;
+    public List<FieldError> getErrors() {
+        return Collections.unmodifiableList(errors);
     }
 
     @Override
@@ -32,7 +33,10 @@ public class ValidationResult {
 
         return "ValidationResult: invalid\n" +
                 errors.stream()
-                        .map(e -> " - " + e)
+                        .map(e -> " - %s: %s".formatted(
+                                e.property(),
+                                e.message()
+                        ))
                         .collect(Collectors.joining("\n"));
     }
 }

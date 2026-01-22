@@ -19,7 +19,7 @@ public class ValidateAspect {
         ValidationResult result = validator.validate(target);
 
         if (result.isNotValid()) {
-            throw new FluentValidationException(result);
+            throw new FluentValidationException(result, target.getClass());
         }
     }
 }

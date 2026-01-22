@@ -1,18 +1,22 @@
-# FluentValidation for Java
+# FluentValidation Spring for Java
 
-A fluent validation library for Java inspired by the .NET FluentValidation library. It provides a simple, readable, and type-safe way to define validation rules for your domain objects.
+Spring integration for **FluentValidation Core**, providing **aspect-oriented validation** and **JPA entity validation** out-of-the-box.
+
+---
 
 ## Features
 
-- **Fluent API** - Chain validation rules in a readable manner
-- **Type-safe** - Uses generics and lambda expressions for compile-time safety
-- **Extensible** - Easy to add custom validation rules
-- **Cascade modes** - Control validation flow when rules fail
-- **AOP Support** - Aspect-oriented validation with annotations
+* **Spring AOP Validation** – Automatically validate method arguments with `@Validated`
+* **JPA Entity Validation** – Validate entities before `@PrePersist` and `@PreUpdate`
+* **Conditional Beans** – Enable/disable integration via properties
+* **Spring Context Support** – Access validators as Spring beans
+* **Conditional Validation (`skip`)** – Skip validation dynamically
+
+---
 
 ## Installation
 
-Add the dependency to your `pom.xml`:
+Add the Spring integration dependency to your `pom.xml`:
 
 ```xml
 <dependency>
@@ -20,6 +24,11 @@ Add the dependency to your `pom.xml`:
     <artifactId>fluentvalidation-spring</artifactId>
     <version>1.0.0</version>
 </dependency>
+```
+
+> Make sure you also include the core module:
+
+```xml
 <dependency>
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-core</artifactId>
@@ -27,86 +36,104 @@ Add the dependency to your `pom.xml`:
 </dependency>
 ```
 
+---
+
+## Configuration
+
+### Enable or disable FluentValidation Spring:
+
+```properties
+# Enable/disable all Spring validation
+tr.kontas.fluentvalidation.spring.enabled=true
+
+# Enable/disable JPA entity validation
+tr.kontas.fluentvalidation.jpa.enabled=false
+```
+
+> If JPA integration is disabled, entity listeners will skip validation automatically.
+
+---
+
 ## Quick Start
 
-### 1. Create a model class
+### 1. Create a JPA entity
 
 ```java
-@AllArgsConstructor
-@Validate(validator = UserValidator.class)
+@Entity
+@Table(name = "app_user")
+@EntityListeners(FluentValidationEntityListener.class)
+@Validate(validator = UserEntityValidator.class)
+@Data
 public class User {
-    private String name;
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private String email;
     private int age;
-    
-    // getters and setters
 }
 ```
 
-### 2. Define a validator
+---
+
+### 2. Create a Spring validator
 
 ```java
-import org.springframework.stereotype.Component;
-
 @Component
-public class UserValidator extends Validator<User> {
-    public UserValidator() {
+public class UserEntityValidator extends Validator<User> {
+
+    public UserEntityValidator() {
         ruleFor(User::getEmail)
-                .notNull()
-                .notEmpty()
-                .email()
-                .withMessage("Email format is invalid");
+            .notBlank()
+            .email()
+            .withMessage("Email format is invalid");
 
         ruleFor(User::getAge)
-                .greaterThan(18)
-                .withMessage("Age should be over 18");
+            .greaterThan(18)
+            .withMessage("Age should be over 18");
+    }
 
-        ruleFor(User::getName)
-                .notBlank()
-                .minLength(3);
+    @Override
+    public boolean skip(User user) {
+        // Skip validation if email is "test@test.com"
+        return "test@test.com".equalsIgnoreCase(user.getEmail());
     }
 }
 ```
 
-### 3. Validate an object
+---
+
+### 3. JPA entity validation example
+
+If JPA integration is enabled, the listener will validate entities before persistence:
 
 ```java
-User user = new User("Jo", "invalid-email", 16); // throws exception
+User user = new User();
+user.setEmail("test@test.com"); // Will skip validation
+user.setAge(16);
+
+repository.save(user); // Validation will run unless skip() returns true
 ```
 
-## Available Validation Rules
+---
 
-| Rule | Description |
-|------|-------------|
-| `notNull()` | Value must not be null |
-| `notEmpty()` | String must not be empty |
-| `notBlank()` | String must not be blank (whitespace only) |
-| `email()` | Must be a valid email format |
-| `minLength(int)` | Minimum string length |
-| `maxLength(int)` | Maximum string length |
-| `greaterThan(T)` | Value must be greater than specified |
-| `lessThan(T)` | Value must be less than specified |
+## Conditional Validation (`skip()`)
 
-## Custom Messages
-
-Use `withMessage()` to specify custom error messages:
+* Use `skip()` in your Spring validators to **dynamically bypass validation** based on object state.
+* Example:
 
 ```java
-ruleFor(User::getEmail)
-    .email()
-    .withMessage("Please provide a valid email address");
+@Override
+public boolean skip(User user) {
+    return "test@test.com".equalsIgnoreCase(user.getEmail());
+}
 ```
 
-## Cascade Mode
+* Return `true` → skip all rules for this object
+* Return `false` → validate normally
 
-Control whether validation continues after a failure:
-
-```java
-ruleFor(User::getEmail)
-    .cascade(CascadeMode.STOP_ON_FIRST_FAILURE)
-    .notNull()
-    .email();
-```
+---
 
 ## License
 

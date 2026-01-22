@@ -8,16 +8,16 @@ import java.util.regex.Pattern;
 
 public class RuleBuilder<T, R> {
 
-    private final Function<T, R> property;
+    private final Function<T, R> propertyAccessor;
     private final String propertyName;
     private final List<ValidationStep<R>> steps = new ArrayList<>();
 
     private CascadeMode cascadeMode = CascadeMode.CONTINUE;
     private ValidationStep<R> lastStep;
 
-    public RuleBuilder(Function<T, R> property, String propertyName) {
-        this.property = property;
+    public RuleBuilder(String propertyName, Function<T, R> propertyAccessor) {
         this.propertyName = propertyName;
+        this.propertyAccessor = propertyAccessor;
     }
 
     public RuleBuilder<T, R> cascade(CascadeMode mode) {
@@ -43,14 +43,18 @@ public class RuleBuilder<T, R> {
     }
 
     void validate(T target, ValidationResult result) {
-        R value = property.apply(target);
+        R value = propertyAccessor.apply(target);
 
         for (ValidationStep<R> step : steps) {
             if (!step.isValid(value)) {
-                result.addError(propertyName + ": " + step.getMessage());
+
+                result.addError(
+                        propertyName,
+                        step.getMessage()
+                );
 
                 if (cascadeMode == CascadeMode.STOP) {
-                    break;
+                    return;
                 }
             }
         }
@@ -61,36 +65,39 @@ public class RuleBuilder<T, R> {
     }
 
     public RuleBuilder<T, R> notEmpty() {
-        return must(v -> v != null && !v.toString().isEmpty(), "must not be empty");
+        return must(
+                v -> v != null && !v.toString().isEmpty(),
+                "must not be empty"
+        );
     }
 
     public RuleBuilder<T, R> notBlank() {
-        return must(v -> v != null && !v.toString().trim().isEmpty(), "must not be blank");
+        return must(
+                v -> v != null && !v.toString().trim().isEmpty(),
+                "must not be blank"
+        );
     }
 
     public RuleBuilder<T, R> equalTo(R other) {
-        return must(v -> v != null && v.equals(other), "must be equal to " + other);
+        return must(
+                v -> v != null && v.equals(other),
+                "must be equal to " + other
+        );
     }
 
     public RuleBuilder<T, R> greaterThan(Number min) {
         return must(
-                v -> v != null && ((Number) v).doubleValue() > min.doubleValue(),
+                v -> v instanceof Number
+                        && ((Number) v).doubleValue() > min.doubleValue(),
                 "must be greater than " + min
         );
     }
 
     public RuleBuilder<T, R> lessThan(Number max) {
         return must(
-                v -> v != null && ((Number) v).doubleValue() < max.doubleValue(),
+                v -> v instanceof Number
+                        && ((Number) v).doubleValue() < max.doubleValue(),
                 "must be less than " + max
-        );
-    }
-
-    public RuleBuilder<T, R> email() {
-        return must(
-                v -> v != null && v.toString()
-                        .matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"),
-                "must be a valid email address"
         );
     }
 
@@ -101,12 +108,15 @@ public class RuleBuilder<T, R> {
         );
     }
 
-    public RuleBuilder<T, R> matches(String regex) {
-        Pattern pattern = Pattern.compile(regex);
+    public RuleBuilder<T, R> email() {
         return must(
-                v -> v != null && pattern.matcher(v.toString()).matches(),
-                "must match regex: " + regex
+                v -> v != null && EMAIL_PATTERN.matcher(v.toString()).matches(),
+                "must be a valid email address"
         );
+    }
+
+    public RuleBuilder<T, R> matches(String regex) {
+        return matches(Pattern.compile(regex));
     }
 
     public RuleBuilder<T, R> matches(Pattern pattern) {
@@ -115,4 +125,7 @@ public class RuleBuilder<T, R> {
                 "must match pattern: " + pattern.pattern()
         );
     }
+
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
 }

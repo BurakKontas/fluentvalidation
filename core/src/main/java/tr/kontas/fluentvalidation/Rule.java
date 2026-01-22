@@ -5,12 +5,15 @@ import java.util.function.Predicate;
 
 public class Rule<T, R> {
 
-    private final Function<T, R> property;
+    private final String propertyName;
+    private final Function<T, R> propertyAccessor;
+
     private Predicate<R> condition;
     private String message;
 
-    public Rule(Function<T, R> property) {
-        this.property = property;
+    public Rule(String propertyName, Function<T, R> propertyAccessor) {
+        this.propertyName = propertyName;
+        this.propertyAccessor = propertyAccessor;
     }
 
     public Rule<T, R> must(Predicate<R> condition) {
@@ -24,9 +27,16 @@ public class Rule<T, R> {
     }
 
     public void validate(T target, ValidationResult result) {
-        R value = property.apply(target);
-        if (!condition.test(value)) {
-            result.addError(message);
+
+        R value = propertyAccessor.apply(target);
+
+        if (condition == null || condition.test(value)) {
+            return;
         }
+
+        result.addError(
+                propertyName,
+                message != null ? message : "Validation failed"
+        );
     }
 }
