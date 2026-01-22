@@ -25,14 +25,24 @@ jobs:
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
 
-      - name: Build and Sign
-        run: mvn -B -Prelease clean package gpg:sign
-        env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
-      - name: Publish to Central Portal
+      - name: Configure GPG for non-interactive use
         run: |
-          mvn -B deploy \
-            -DaltDeploymentRepository=central::https://central.sonatype.com/api/v1/publisher/upload?name=tr.kontas.fluentvalidation&publishingType=AUTOMATIC \
-            -Dcentral.username=${{ secrets.MAVEN_USERNAME }} \
-            -Dcentral.token=${{ secrets.MAVEN_PASSWORD }}
+          mkdir -p ~/.gnupg
+          echo "use-agent" >> ~/.gnupg/gpg.conf
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          chmod 700 ~/.gnupg
+          gpgconf --kill gpg-agent || true
+
+      - name: Deploy to Central Portal
+        run: |
+          mvn -B clean deploy \
+            -Prelease \
+            -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+            -Dgpg.useagent=false \
+            -Dgpg.pinentry-mode=loopback \
+            -DaltDeploymentRepository=central::https://central.sonatype.com/api/v1/publisher/upload?name=fluentvalidation&publishingType=AUTOMATIC
+        env:
+          MAVEN_OPTS: "--add-opens=java.base/java.util=ALL-UNNAMED"
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
