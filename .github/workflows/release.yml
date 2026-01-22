@@ -23,13 +23,13 @@ jobs:
       - name: Create Maven settings.xml
         run: |
           mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml << EOF
+          cat > ~/.m2/settings.xml << 'EOF'
           <settings>
             <servers>
               <server>
                 <id>ossrh</id>
-                <username>\${env.MAVEN_USERNAME}</username>
-                <password>\${env.MAVEN_PASSWORD}</password>
+                <username>${{ secrets.OSSRH_USERNAME }}</username>
+                <password>${{ secrets.OSSRH_TOKEN }}</password>
               </server>
             </servers>
             <profiles>
@@ -37,7 +37,7 @@ jobs:
                 <id>release</id>
                 <properties>
                   <gpg.executable>gpg</gpg.executable>
-                  <gpg.passphrase>\${env.MAVEN_GPG_PASSPHRASE}</gpg.passphrase>
+                  <gpg.passphrase>${{ secrets.GPG_PASSPHRASE }}</gpg.passphrase>
                 </properties>
               </profile>
             </profiles>
@@ -54,7 +54,4 @@ jobs:
       - name: Deploy to Maven Central
         run: mvn -B -Prelease clean deploy
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           GPG_TTY: $(tty)
