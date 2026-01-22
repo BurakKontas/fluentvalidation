@@ -112,14 +112,7 @@ ruleFor(User::getEmail)
 
 ## Annotation-Based Validation
 
-Use the `@Validate` annotation with AOP support:
-
-```java
-@Validate
-public void createUser(User user) {
-    // user is automatically validated before method execution
-}
-```
+Check FluentValidation AspectJ for native, FluentValidation Spring for Spring Boot applications.
 
 ## License
 
