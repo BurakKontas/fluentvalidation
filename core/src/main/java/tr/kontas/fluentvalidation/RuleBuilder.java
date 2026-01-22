@@ -143,6 +143,15 @@ public class RuleBuilder<T, R> {
         );
     }
 
+    public RuleBuilder<T, R> strongPassword() {
+        return this
+                .minLength(8)
+                .containsUppercase()
+                .containsLowercase()
+                .containsDigit()
+                .containsSpecialChar();
+    }
+
     public RuleBuilder<T, R> matches(String regex) {
         return matches(Pattern.compile(regex));
     }
