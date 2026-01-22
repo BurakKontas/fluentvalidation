@@ -20,36 +20,19 @@ jobs:
           java-version: '25'
           cache: 'maven'
 
-      - name: Create Maven settings.xml
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml << 'EOF'
-          <settings>
-            <servers>
-              <server>
-                <id>ossrh</id>
-                <username>${{ secrets.OSSRH_USERNAME }}</username>
-                <password>${{ secrets.OSSRH_TOKEN }}</password>
-              </server>
-            </servers>
-            <profiles>
-              <profile>
-                <id>release</id>
-                <properties>
-                  <gpg.executable>gpg</gpg.executable>
-                  <gpg.passphrase>${{ secrets.GPG_PASSPHRASE }}</gpg.passphrase>
-                </properties>
-              </profile>
-            </profiles>
-          </settings>
-          EOF
-
       - name: Import GPG key
         run: |
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
 
-      - name: Deploy to Maven Central
-        run: mvn -B -Prelease clean deploy
+      - name: Build and Sign
+        run: mvn -B -Prelease clean package gpg:sign
         env:
-          GPG_TTY: $(tty)
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Publish to Central Portal
+        run: |
+          mvn -B deploy \
+            -DaltDeploymentRepository=central::https://central.sonatype.com/api/v1/publisher/upload?name=tr.kontas.fluentvalidation&publishingType=AUTOMATIC \
+            -Dcentral.username=${{ secrets.MAVEN_USERNAME }} \
+            -Dcentral.token=${{ secrets.MAVEN_PASSWORD }}
