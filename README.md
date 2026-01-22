@@ -105,7 +105,7 @@ Control whether validation continues after a failure:
 
 ```java
 ruleFor(User::getEmail)
-    .cascade(CascadeMode.STOP_ON_FIRST_FAILURE)
+    .cascade(CascadeMode.STOP)
     .notNull()
     .email();
 ```
@@ -123,4 +123,4 @@ public void createUser(User user) {
 
 ## License
 
-MIT License
+GPL-3.0 License

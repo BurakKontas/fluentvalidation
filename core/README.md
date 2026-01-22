@@ -118,4 +118,4 @@ ruleFor(User::getEmail)
 
 ## License
 
-MIT License
+GPL-3.0 License

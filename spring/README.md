@@ -137,4 +137,4 @@ public boolean skip(User user) {
 
 ## License
 
-MIT License
+GPL-3.0 License

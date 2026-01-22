@@ -116,5 +116,5 @@ public class Main {
 
 ## License
 
-MIT License
+GPL-3.0 License
 
