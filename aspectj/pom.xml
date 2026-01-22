@@ -10,11 +10,12 @@
     <parent>
         <groupId>tr.kontas.fluentvalidation</groupId>
         <artifactId>fluentvalidation-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
     </parent>
 
     <artifactId>fluentvalidation-aspectj</artifactId>
     <name>FluentValidation AspectJ</name>
+    <url>https://github.com/BurakKontas/fluentvalidation</url>
 
     <dependencies>
 
