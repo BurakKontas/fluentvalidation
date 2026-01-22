@@ -7,6 +7,9 @@
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-aspectj</artifactId>
     <version>1.0.0</version>
+    <description>A fluent validation library for Java inspired by the .NET FluentValidation library. It provides a simple, readable, and type-safe way to define validation rules for your domain objects.</description>
+    <url>https://github.com/BurakKontas/fluentvalidation</url>
+    <name>FluentValidation AspectJ</name>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>

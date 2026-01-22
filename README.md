@@ -16,8 +16,8 @@ Add the dependency to your `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>tr.kontas</groupId>
-    <artifactId>fluentvalidation</artifactId>
+    <groupId>tr.kontas.fluentvalidation</groupId>
+    <artifactId>fluentvalidation-core</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
