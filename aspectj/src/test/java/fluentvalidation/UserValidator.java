@@ -1,6 +1,6 @@
 package fluentvalidation;
 
-import tr.kontas.fluentvalidation.Validator;
+import tr.kontas.fluentvalidation.validation.Validator;
 
 public class UserValidator extends Validator<User> {
     public UserValidator() {

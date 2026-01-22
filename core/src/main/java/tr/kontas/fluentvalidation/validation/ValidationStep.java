@@ -1,8 +1,8 @@
-package tr.kontas.fluentvalidation;
+package tr.kontas.fluentvalidation.validation;
 
 import java.util.function.Predicate;
 
-class ValidationStep<R> {
+public class ValidationStep<R> {
 
     private final Predicate<R> predicate;
     private String message;
@@ -12,15 +12,15 @@ class ValidationStep<R> {
         this.message = message;
     }
 
-    boolean isValid(R value) {
+    public boolean isValid(R value) {
         return predicate.test(value);
     }
 
-    String getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

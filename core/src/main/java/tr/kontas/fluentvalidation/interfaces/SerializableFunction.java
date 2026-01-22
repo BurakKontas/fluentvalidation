@@ -1,4 +1,4 @@
-package tr.kontas.fluentvalidation;
+package tr.kontas.fluentvalidation.interfaces;
 
 import java.io.Serializable;
 import java.util.function.Function;

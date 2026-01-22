@@ -1,4 +1,6 @@
-package tr.kontas.fluentvalidation;
+package tr.kontas.fluentvalidation.annotations;
+
+import tr.kontas.fluentvalidation.validation.Validator;
 
 import java.lang.annotation.*;
 

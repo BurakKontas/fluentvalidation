@@ -1,4 +1,4 @@
-package tr.kontas.fluentvalidation;
+package tr.kontas.fluentvalidation.enums;
 
 public enum CascadeMode {
     CONTINUE, // run all rules

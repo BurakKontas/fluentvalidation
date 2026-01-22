@@ -1,6 +1,6 @@
 package fluentvalidation;
 
-import tr.kontas.fluentvalidation.Validate;
+import tr.kontas.fluentvalidation.annotations.Validate;
 
 @Validate(validator = UserValidator.class)
 public class User {

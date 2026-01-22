@@ -1,4 +1,6 @@
-package tr.kontas.fluentvalidation;
+package tr.kontas.fluentvalidation.rule;
+
+import tr.kontas.fluentvalidation.validation.ValidationResult;
 
 import java.util.function.Function;
 import java.util.function.Predicate;

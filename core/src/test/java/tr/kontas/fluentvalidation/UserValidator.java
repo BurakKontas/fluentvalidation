@@ -1,5 +1,7 @@
 package tr.kontas.fluentvalidation;
 
+import tr.kontas.fluentvalidation.validation.Validator;
+
 public class UserValidator extends Validator<User> {
     public UserValidator() {
         ruleFor(User::getEmail)

@@ -1,4 +1,7 @@
-package tr.kontas.fluentvalidation;
+package tr.kontas.fluentvalidation.exceptions;
+
+import tr.kontas.fluentvalidation.validation.ValidationResult;
+import tr.kontas.fluentvalidation.dtos.FieldError;
 
 public class FluentValidationException extends RuntimeException {
 

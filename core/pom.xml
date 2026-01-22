@@ -1,49 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="
+           http://maven.apache.org/POM/4.0.0
+           https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>tr.kontas.fluentvalidation</groupId>
+    <parent>
+        <groupId>tr.kontas.fluentvalidation</groupId>
+        <artifactId>fluentvalidation-parent</artifactId>
+        <version>1.0.2</version>
+    </parent>
+
     <artifactId>fluentvalidation-core</artifactId>
-    <version>1.0.1</version>
-    <description>A fluent validation library for Java inspired by the .NET FluentValidation library. It provides a simple, readable, and type-safe way to define validation rules for your domain objects.</description>
-    <url>https://github.com/BurakKontas/fluentvalidation</url>
     <name>FluentValidation Core</name>
-
-    <licenses>
-        <license>
-            <name>GPL-3.0 license</name>
-            <url>https://github.com/BurakKontas/fluentvalidation/blob/main/LICENSE.txt</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>Arda Burak Kontaş</name>
-            <email>aburakkontas@hotmail.com</email>
-            <organization>BurakKontas</organization>
-            <organizationUrl>https://github.com/BurakKontas</organizationUrl>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git://github.com/BurakKontas/fluentvalidation.git</connection>
-        <developerConnection>scm:git:ssh://github.com/BurakKontas/fluentvalidation.git</developerConnection>
-        <url>https://github.com/BurakKontas/fluentvalidation/tree/main</url>
-    </scm>
-
-    <properties>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>6.0.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

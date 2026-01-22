@@ -6,10 +6,10 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import tr.kontas.fluentvalidation.FluentValidationException;
-import tr.kontas.fluentvalidation.Validate;
-import tr.kontas.fluentvalidation.ValidationResult;
-import tr.kontas.fluentvalidation.Validator;
+import tr.kontas.fluentvalidation.exceptions.FluentValidationException;
+import tr.kontas.fluentvalidation.annotations.Validate;
+import tr.kontas.fluentvalidation.validation.ValidationResult;
+import tr.kontas.fluentvalidation.validation.Validator;
 
 @Aspect
 @ConditionalOnClass(ApplicationContext.class)

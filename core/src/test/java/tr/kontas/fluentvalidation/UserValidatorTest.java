@@ -1,6 +1,7 @@
 package tr.kontas.fluentvalidation;
 
 import org.junit.jupiter.api.Test;
+import tr.kontas.fluentvalidation.validation.ValidationResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 

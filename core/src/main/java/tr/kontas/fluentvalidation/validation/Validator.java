@@ -1,4 +1,7 @@
-package tr.kontas.fluentvalidation;
+package tr.kontas.fluentvalidation.validation;
+
+import tr.kontas.fluentvalidation.rule.RuleBuilder;
+import tr.kontas.fluentvalidation.interfaces.SerializableFunction;
 
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Method;

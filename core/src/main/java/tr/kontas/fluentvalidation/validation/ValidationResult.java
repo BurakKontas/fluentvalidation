@@ -1,4 +1,6 @@
-package tr.kontas.fluentvalidation;
+package tr.kontas.fluentvalidation.validation;
+
+import tr.kontas.fluentvalidation.dtos.FieldError;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -2,7 +2,10 @@ package tr.kontas.fluentvalidation.spring;
 
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import tr.kontas.fluentvalidation.*;
+import tr.kontas.fluentvalidation.exceptions.FluentValidationException;
+import tr.kontas.fluentvalidation.annotations.Validate;
+import tr.kontas.fluentvalidation.validation.ValidationResult;
+import tr.kontas.fluentvalidation.validation.Validator;
 
 public class FluentValidationEntityListener {
 

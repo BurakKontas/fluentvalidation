@@ -1,7 +1,7 @@
 package fluentvalidation;
 
 import org.junit.jupiter.api.Test;
-import tr.kontas.fluentvalidation.FluentValidationException;
+import tr.kontas.fluentvalidation.exceptions.FluentValidationException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
