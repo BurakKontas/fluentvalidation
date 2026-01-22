@@ -40,8 +40,7 @@ jobs:
             -Prelease \
             -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" \
             -Dgpg.useagent=false \
-            -Dgpg.pinentry-mode=loopback \
-            -DaltDeploymentRepository=central::https://central.sonatype.com/api/v1/publisher/upload?name=fluentvalidation&publishingType=AUTOMATIC
+            -Dgpg.pinentry-mode=loopback
         env:
           MAVEN_OPTS: "--add-opens=java.base/java.util=ALL-UNNAMED"
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
