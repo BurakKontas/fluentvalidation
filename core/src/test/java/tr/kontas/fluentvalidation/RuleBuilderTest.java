@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import tr.kontas.fluentvalidation.exceptions.FluentValidationException;
 import tr.kontas.fluentvalidation.validation.ValidationResult;
 import tr.kontas.fluentvalidation.validators.*;
 
@@ -1951,6 +1952,41 @@ public class RuleBuilderTest {
 
             ValidationResult result = validator.validate(model);
             assertFalse(result.isValid());
+        }
+    }
+
+    @Nested
+    class ValidatorAnnotationTests {
+        @Test
+        void validate_ok_when_value_not_null() {
+            TestModel model = new TestModel("test");
+
+            assertDoesNotThrow(() -> model.validate());
+        }
+
+        @Test
+        void validate_throws_when_value_null() {
+            TestModel model = new TestModel(null);
+
+            assertThrows(FluentValidationException.class, () -> model.validate());
+        }
+
+        @Test
+        void validate_without_exception_flag_returns_invalid_result() {
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = model.validate(false);
+
+            assertTrue(result.isNotValid());
+        }
+
+        @Test
+        void validate_without_exception_flag_returns_valid_result() {
+            TestModel model = new TestModel("test");
+
+            ValidationResult result = model.validate(false);
+
+            assertTrue(result.isValid());
         }
     }
 }

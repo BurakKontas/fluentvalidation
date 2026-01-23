@@ -37,12 +37,12 @@
         <dependency>
             <groupId>tr.kontas.fluentvalidation</groupId>
             <artifactId>fluentvalidation-core</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>tr.kontas</groupId>
             <artifactId>fluentvalidation-spring</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

@@ -21,16 +21,4 @@ public class Order {
     public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
     public ShippingSpeed getShippingSpeed() { return shippingSpeed; }
     public void setShippingSpeed(ShippingSpeed shippingSpeed) { this.shippingSpeed = shippingSpeed; }
-    public String getPaymentMethod() { return paymentMethod; }
-    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
-    public boolean isPickup() { return pickup; }
-    public void setPickup(boolean pickup) { this.pickup = pickup; }
-    public boolean isDigitalProduct() { return digitalProduct; }
-    public void setDigitalProduct(boolean digitalProduct) { this.digitalProduct = digitalProduct; }
-    public boolean isInternational() { return international; }
-    public void setInternational(boolean international) { this.international = international; }
-    public double getCustomsValue() { return customsValue; }
-    public void setCustomsValue(double customsValue) { this.customsValue = customsValue; }
-    public String getDeliveryAddress() { return deliveryAddress; }
-    public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
 }

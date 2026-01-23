@@ -19,7 +19,7 @@ Add the dependency to your `pom.xml`:
 <dependency>
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-core</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 
@@ -86,6 +86,50 @@ if (!result.isValid()) {
     System.out.println("Validation skipped or passed!");
 }
 ```
+---
+
+## Validatable Interface
+
+The `Validatable` interface enables **automatic validation** using the `@Validate` annotation.
+The annotated validator is resolved and executed at runtime, eliminating manual instantiation.
+
+### Usage
+
+#### 1. Annotate your class
+
+```java
+@Validate(validator = LoginCommandValidator.class)
+public class LoginCommand implements Validatable {
+    private String token;
+}
+```
+
+#### 2. Define the validator
+
+```java
+public class LoginCommandValidator extends Validator<LoginCommand> {
+    public LoginCommandValidator() {
+        ruleFor(LoginCommand::getToken)
+            .notNull()
+            .notEmpty();
+    }
+}
+```
+
+#### 3. Validate
+
+```java
+ValidationResult result = command.validate();        // throws FluentValidationException on failure
+ValidationResult result = command.validate(false);   // returns ValidationResult without throwing
+```
+
+#### Notes
+
+* Requires `@Validate` annotation
+* Validator must have a public no-args constructor
+* Validation is triggered via `validate()` or `validate(false)`
+
+---
 
 ## Custom Messages
 
@@ -561,6 +605,8 @@ ruleFor(User::getAge)
 ```
 
 Conditional validations provide powerful flexibility for implementing complex business rules while maintaining clean, readable validation logic.
+
+
 
 ## License
 

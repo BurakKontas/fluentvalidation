@@ -21,13 +21,13 @@ Add the **core** and **AspectJ** modules to your project:
 <dependency>
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.6</version>
 </dependency>
 
 <dependency>
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-aspectj</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 

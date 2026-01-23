@@ -1,11 +1,16 @@
 package tr.kontas.fluentvalidation;
 
+import tr.kontas.fluentvalidation.annotations.Validate;
+import tr.kontas.fluentvalidation.interfaces.Validatable;
+import tr.kontas.fluentvalidation.validators.TestValidator;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public class TestModel {
+@Validate(validator = TestValidator.class)
+public class TestModel implements Validatable {
     private String value;
     private Integer age;
     private BigDecimal price;
