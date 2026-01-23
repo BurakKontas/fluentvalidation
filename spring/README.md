@@ -22,20 +22,15 @@ Add the Spring integration dependency to your `pom.xml`:
 <dependency>
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-spring</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
-```
 
-> Make sure you also include the core module:
-
-```xml
 <dependency>
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-core</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
 ```
-
 ---
 
 ## Configuration

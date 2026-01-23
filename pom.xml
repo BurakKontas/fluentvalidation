@@ -10,7 +10,7 @@
     <!-- ========= GAV ========= -->
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-pom</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <packaging>pom</packaging>
 
     <!-- ========= MODULES ========= -->
@@ -53,13 +53,17 @@
 
     <!-- ========= PROPERTIES ========= -->
     <properties>
-        <java.version>25</java.version>
+        <!-- Java -->
+        <java.version>17</java.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring.boot.version>4.0.0</spring.boot.version>
+        <!-- Spring Boot -->
+        <spring.boot.version>3.0.11</spring.boot.version>
+
+        <!-- AspectJ -->
         <aspectj.version>1.9.25.1</aspectj.version>
     </properties>
 
@@ -97,8 +101,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.13.0</version>
                     <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
+                        <release>${java.version}</release>
                     </configuration>
                 </plugin>
 
@@ -156,6 +159,7 @@
             <id>release</id>
             <build>
                 <plugins>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -201,7 +205,6 @@
                         <artifactId>central-publishing-maven-plugin</artifactId>
                         <version>0.6.0</version>
                         <extensions>true</extensions>
-
                         <executions>
                             <execution>
                                 <id>publish-to-central</id>
@@ -211,13 +214,8 @@
                                 </goals>
                             </execution>
                         </executions>
-
-                        <configuration>
-                            <publishingServerId>central</publishingServerId>
-                            <autoPublish>true</autoPublish>
-                            <waitUntil>published</waitUntil>
-                        </configuration>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>

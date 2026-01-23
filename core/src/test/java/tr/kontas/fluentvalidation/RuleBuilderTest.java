@@ -1731,7 +1731,7 @@ public class RuleBuilderTest {
             ValidationResult result = validator.validate(model);
             assertFalse(result.isValid());
             assertEquals(1, result.getErrors().size());
-            assertTrue(result.getErrors().getFirst().message().contains("must not be null"));
+            assertTrue(result.getErrors().get(0).message().contains("must not be null"));
         }
 
         @Test

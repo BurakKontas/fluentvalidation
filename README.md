@@ -19,7 +19,7 @@ Add the dependency to your `pom.xml`:
 <dependency>
     <groupId>tr.kontas.fluentvalidation</groupId>
     <artifactId>fluentvalidation-core</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 </dependency>
 ```
 
@@ -86,6 +86,134 @@ if (!result.isValid()) {
     System.out.println("Validation skipped or passed!");
 }
 ```
+---
+
+### ValidationResult
+
+`ValidationResult` represents the outcome of a validation operation.
+It is returned by the `validate()` method and contains all validation errors collected during rule execution.
+
+```java
+ValidationResult result = validator.validate(user);
+```
+
+---
+
+#### Purpose
+
+* Collects **all validation errors** for an object
+* Provides an easy way to check whether validation **passed or failed**
+* Stores errors in a **field-based** structure
+* Supports multiple errors per object
+
+---
+
+#### Checking Validation Status
+
+```java
+if (result.isValid()) {
+    System.out.println("Validation passed!");
+}
+```
+
+Or the inverse:
+
+```java
+if (result.isNotValid()) {
+    System.out.println("Validation failed!");
+}
+```
+
+---
+
+#### Accessing Validation Errors
+
+Each validation error is represented by a `FieldError`, which contains:
+
+* `property` – the name of the validated field
+* `message` – the validation error message
+
+```java
+result.getErrors().forEach(error -> {
+    System.out.println(error.property() + ": " + error.message());
+});
+```
+
+Example output:
+
+```
+email: Invalid email format
+age: Age must be over 18
+```
+
+> `getErrors()` returns an **unmodifiable list**, ensuring immutability.
+
+---
+
+#### FieldError Structure
+
+```java
+public record FieldError(String property, String message) {}
+```
+
+This makes error handling simple and type-safe.
+
+---
+
+#### String Representation
+
+`ValidationResult` provides a helpful `toString()` implementation for debugging and logging.
+
+```java
+System.out.println(result);
+```
+
+Output example:
+
+```
+ValidationResult: invalid
+ - email: Invalid email format
+ - age: Age must be over 18
+```
+
+If validation passes:
+
+```
+ValidationResult: valid
+```
+
+---
+
+#### Behavior with `skip()`
+
+If validation is skipped via the `skip()` method in a validator:
+
+```java
+@Override
+public boolean skip(User user) {
+    return "test@test.com".equalsIgnoreCase(user.getEmail());
+}
+```
+
+Then:
+
+* No rules are executed
+* `ValidationResult.isValid()` returns `true`
+* No errors are added
+
+---
+
+#### When to Use ValidationResult Directly
+
+Use `ValidationResult` when you want:
+
+* Manual control over validation flow
+* Non-exception-based validation
+* Aggregated error reporting
+* API-friendly validation responses
+
+For automatic validation with exceptions, see **Validatable Interface**.
+
 ---
 
 ## Validatable Interface

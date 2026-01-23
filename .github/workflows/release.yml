@@ -9,23 +9,32 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        java: [17, 21, 25]
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Set up JDK 25
+      - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '25'
+          java-version: ${{ matrix.java }}
           cache: 'maven'
 
+      - name: Build & Test
+        run: mvn -B clean verify
+
       - name: Import GPG key
+        if: matrix.java == 17
         run: |
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
 
       - name: Configure GPG for non-interactive use
+        if: matrix.java == 17
         run: |
           mkdir -p ~/.gnupg
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
@@ -34,6 +43,7 @@ jobs:
           gpgconf --kill gpg-agent || true
 
       - name: Configure Maven settings.xml
+        if: matrix.java == 17
         run: |
           mkdir -p ~/.m2
           cat > ~/.m2/settings.xml <<EOF
@@ -49,6 +59,7 @@ jobs:
           EOF
 
       - name: Deploy to Maven Central
+        if: matrix.java == 17
         run: |
           mvn -B clean deploy \
             -Prelease \
