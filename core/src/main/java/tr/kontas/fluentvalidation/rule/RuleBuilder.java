@@ -3312,7 +3312,7 @@ public class RuleBuilder<T, R> {
      * Validates that a property does not contain command injection patterns with a custom error message.
      * This method checks for dangerous characters and sequences commonly used in command injection attacks.
      *
-     * <p><b>Validates against:</b> ; & | ` $ ( ) < > \\n \\r && ||</p>
+     * <p><b>Validates against:</b> {@code ; & | ` $ ( ) < > \n \r && ||}</p>
      *
      * <p><b>Example:</b></p>
      * <pre>
