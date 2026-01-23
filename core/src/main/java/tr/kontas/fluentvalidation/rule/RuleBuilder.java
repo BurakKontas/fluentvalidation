@@ -101,7 +101,7 @@ public class RuleBuilder<T, R> {
      * @param message The error message to display if validation fails
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getAge)
@@ -124,7 +124,7 @@ public class RuleBuilder<T, R> {
      * @return This RuleBuilder for chaining
      * @throws IllegalStateException if called before any validation rule
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getEmail)
@@ -176,7 +176,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getName).notNull();
@@ -203,7 +203,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getMiddleName).isNull();
@@ -230,7 +230,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getName).notEmpty();  // For strings
@@ -298,7 +298,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getName).notBlank();
@@ -331,7 +331,7 @@ public class RuleBuilder<T, R> {
      * @param other The value to compare against
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getStatus).equalTo("ACTIVE");
@@ -362,7 +362,7 @@ public class RuleBuilder<T, R> {
      * @param other The value to compare against
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getUsername).notEqualTo("admin");
@@ -396,7 +396,7 @@ public class RuleBuilder<T, R> {
      * @param min The minimum value (exclusive)
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getAge).greaterThan(18);
@@ -429,7 +429,7 @@ public class RuleBuilder<T, R> {
      * @param min The minimum value (inclusive)
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getAge).greaterThanOrEqualTo(18);
@@ -461,7 +461,7 @@ public class RuleBuilder<T, R> {
      * @param max The maximum value (exclusive)
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getAge).lessThan(100);
@@ -519,7 +519,7 @@ public class RuleBuilder<T, R> {
      * @param max The maximum value (inclusive)
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getAge).inclusiveBetween(18, 65);
@@ -554,7 +554,7 @@ public class RuleBuilder<T, R> {
      * @param max The maximum value (exclusive)
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Product::getDiscount).exclusiveBetween(0, 100);
@@ -587,7 +587,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Product::getPrice).isPositive();
@@ -687,7 +687,7 @@ public class RuleBuilder<T, R> {
      * @param scale Maximum number of decimal places
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Invoice::getAmount).precisionScale(10, 2); // Max 10 digits, 2 decimal places
@@ -726,7 +726,7 @@ public class RuleBuilder<T, R> {
      * @param exact The exact required length
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getZipCode).length(5); // Must be exactly 5 characters
@@ -758,7 +758,7 @@ public class RuleBuilder<T, R> {
      * @param max Maximum length (inclusive)
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getPassword).length(8, 20); // Between 8 and 20 characters
@@ -794,7 +794,7 @@ public class RuleBuilder<T, R> {
      * @param length Minimum required length
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getName).minLength(3); // At least 3 characters
@@ -825,7 +825,7 @@ public class RuleBuilder<T, R> {
      * @param length Maximum allowed length
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getUsername).maxLength(50); // Maximum 50 characters
@@ -859,7 +859,7 @@ public class RuleBuilder<T, R> {
      * @param min Minimum number of items
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Order::getItems).hasMinCount(1); // At least 1 item
@@ -896,7 +896,7 @@ public class RuleBuilder<T, R> {
      * @param max Maximum number of items
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Order::getItems).hasMaxCount(10); // Maximum 10 items
@@ -933,7 +933,7 @@ public class RuleBuilder<T, R> {
      * @param count Exact number of items required
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(PhoneNumber::getDigits).hasExactCount(10); // Exactly 10 digits
@@ -970,7 +970,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getRoles).hasUniqueItems(); // No duplicate roles
@@ -1005,7 +1005,7 @@ public class RuleBuilder<T, R> {
      * @param item The item to check for
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getRoles).contains("ADMIN"); // Collection contains "ADMIN"
@@ -1041,7 +1041,7 @@ public class RuleBuilder<T, R> {
      * @param item The item to check for absence
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getUsername).doesNotContain("admin"); // Username cannot contain "admin"
@@ -1079,7 +1079,7 @@ public class RuleBuilder<T, R> {
      * @param enumClass The enum class to validate against
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getStatus).isInEnum(UserStatus.class);
@@ -1122,7 +1122,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getEmail).email();
@@ -1152,7 +1152,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getWebsite).url();
@@ -1190,7 +1190,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getFirstName).isAlpha(); // Only letters allowed
@@ -1219,7 +1219,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getZipCode).isNumeric(); // Only digits allowed
@@ -1248,7 +1248,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getUsername).isAlphanumeric(); // Letters and numbers only
@@ -1277,7 +1277,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getCountryCode).isUpperCase(); // Must be like "US", "UK"
@@ -1329,7 +1329,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Color::getHexCode).isHexadecimal(); // Valid: "#FF5733", "abc123"
@@ -1358,7 +1358,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Image::getBase64Data).isBase64();
@@ -1404,7 +1404,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Document::getId).isUuid(); // Valid: "123e4567-e89b-12d3-a456-426614174000"
@@ -1433,7 +1433,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getUsername).containsNoWhitespace(); // No spaces allowed
@@ -1463,7 +1463,7 @@ public class RuleBuilder<T, R> {
      * @param prefix The required prefix
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Image::getUrl).startsWith("https://"); // Must be HTTPS URL
@@ -1494,7 +1494,7 @@ public class RuleBuilder<T, R> {
      * @param suffix The required suffix
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(File::getName).endsWith(".pdf"); // Must be PDF file
@@ -1527,7 +1527,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(BankAccount::getIban).isIban(); // Valid: "GB82 WEST 1234 5698 7654 32"
@@ -1556,7 +1556,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(BankAccount::getBic).isBic(); // Valid: "DEUTDEFF"
@@ -1586,7 +1586,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Book::getIsbn).isIsbn(); // Valid: "0-306-40615-2" or "978-0-306-40615-7"
@@ -1638,7 +1638,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Payment::getCardNumber).creditCard(); // Valid: "4532015112830366"
@@ -1670,7 +1670,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Contact::getPhone).isPhoneNumber(); // Valid: "+1-555-123-4567", "+90 555 123 4567"
@@ -1718,7 +1718,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Server::getIpAddress).isIpAddress(); // Valid: "192.168.1.1" or "2001:0db8::1"
@@ -1793,7 +1793,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Device::getMacAddress).isMacAddress(); // Valid: "00:1B:44:11:3A:B7"
@@ -1825,7 +1825,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getBirthDate).isInPast(); // Birth date must be in the past
@@ -1859,7 +1859,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Appointment::getDate).isInFuture(); // Appointment must be in the future
@@ -1893,7 +1893,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Task::getDueDate).isToday(); // Task is due today
@@ -1928,7 +1928,7 @@ public class RuleBuilder<T, R> {
      * @param years Minimum age in years
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getBirthDate).minAge(18); // Must be at least 18 years old
@@ -1994,7 +1994,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Location::getLatitude).isLatitude(); // Valid: 45.5, -33.86
@@ -2025,7 +2025,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Location::getLongitude).isLongitude(); // Valid: 120.0, -74.0
@@ -2058,7 +2058,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getPassword).containsUppercase();
@@ -2163,7 +2163,7 @@ public class RuleBuilder<T, R> {
      * @param maxLength Maximum password length
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getPassword).strongPassword(8, 20);
@@ -2204,7 +2204,7 @@ public class RuleBuilder<T, R> {
      * @param regex The regular expression pattern
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::getUsername).matches("^[a-zA-Z0-9_]{3,20}$");
@@ -2356,7 +2356,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Server::getPort).isPort(); // Valid: 80, 443, 8080
@@ -2392,7 +2392,7 @@ public class RuleBuilder<T, R> {
      * @param maxBytes Maximum size in bytes
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(File::getSize).maxSizeInBytes(10 * 1024 * 1024); // Max 10 MB
@@ -2454,7 +2454,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Discount::getPercentage).isPercentage(); // Valid: 0, 50, 100
@@ -2488,7 +2488,7 @@ public class RuleBuilder<T, R> {
      * @param divisor The divisor
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Package::getQuantity).isDivisibleBy(12); // Must be in dozens
@@ -2567,7 +2567,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(User::isAgreedToTerms).isTrue(); // Must agree to terms
@@ -2621,7 +2621,7 @@ public class RuleBuilder<T, R> {
      * @param allowedChars String containing all allowed characters
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Code::getValue).containsOnly("ABCDEF1234567890"); // Hexadecimal characters only
@@ -2695,7 +2695,7 @@ public class RuleBuilder<T, R> {
      * @param minWords Minimum number of words required
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Description::getText).hasMinWords(10); // At least 10 words
@@ -2759,7 +2759,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Variable::getName).isCamelCase(); // Valid: "firstName", "userName123"
@@ -2857,7 +2857,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Theme::getColor).isHexColor(); // Valid: "#FF5733", "#abc", "123456"
@@ -2962,7 +2962,7 @@ public class RuleBuilder<T, R> {
      * @param date The date to compare against
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Event::getStartDate).isAfter(LocalDate.now());
@@ -3018,7 +3018,7 @@ public class RuleBuilder<T, R> {
      * @param end End date (inclusive)
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * LocalDate seasonStart = LocalDate.of(2024, 6, 1);
@@ -3110,7 +3110,7 @@ public class RuleBuilder<T, R> {
      * @param itemPredicate Predicate to test each item
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(Students::getGrades).allMatch(grade -> grade >= 50);
@@ -3203,7 +3203,7 @@ public class RuleBuilder<T, R> {
      *
      * @return This RuleBuilder for chaining
      *
-     * @implNote Example Usage:
+     * <br><p><b>Example usage:</b></p>
      * <pre>
      * {@code
      * ruleFor(UserInput::getSearchTerm).containsNoSqlInjection();
