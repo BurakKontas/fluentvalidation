@@ -1598,4 +1598,359 @@ public class RuleBuilderTest {
             assertTrue(hasCustomMessage, "Should have custom error message");
         }
     }
+
+    // ========== MAP VALIDATION TESTS ==========
+    @Nested
+    class MapValidationTests {
+
+        @Test
+        void hasMinCount_should_pass_when_map_has_enough_items() {
+            MapHasMinCountValidator validator = new MapHasMinCountValidator(2);
+            TestModel model = new TestModel("test");
+            Map<String, String> map = new HashMap<>();
+            map.put("key1", "value1");
+            map.put("key2", "value2");
+            map.put("key3", "value3");
+            model.setMap(map);
+
+            ValidationResult result = validator.validate(model);
+            assertTrue(result.isValid());
+        }
+
+        @Test
+        void hasMinCount_should_fail_when_map_has_insufficient_items() {
+            MapHasMinCountValidator validator = new MapHasMinCountValidator(5);
+            TestModel model = new TestModel("test");
+            Map<String, String> map = new HashMap<>();
+            map.put("key1", "value1");
+            map.put("key2", "value2");
+            model.setMap(map);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void hasMinCount_should_fail_when_map_is_null() {
+            MapHasMinCountValidator validator = new MapHasMinCountValidator(1);
+            TestModel model = new TestModel("test");
+            model.setMap(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void notEmpty_should_pass_when_map_is_not_empty() {
+            NotEmptyMapValidator validator = new NotEmptyMapValidator();
+            TestModel model = new TestModel("test");
+            Map<String, String> map = new HashMap<>();
+            map.put("key", "value");
+            model.setMap(map);
+
+            ValidationResult result = validator.validate(model);
+            assertTrue(result.isValid());
+        }
+
+        @Test
+        void notEmpty_should_fail_when_map_is_empty() {
+            NotEmptyMapValidator validator = new NotEmptyMapValidator();
+            TestModel model = new TestModel("test");
+            model.setMap(new HashMap<>());
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+    }
+
+    // ========== ARRAY VALIDATION TESTS ==========
+    @Nested
+    class ArrayValidationTests {
+
+        @Test
+        void hasExactCount_should_pass_when_array_has_exact_count() {
+            ArrayHasExactCountValidator validator = new ArrayHasExactCountValidator(3);
+            TestModel model = new TestModel("test");
+            model.setStringArray(new String[]{"a", "b", "c"});
+
+            ValidationResult result = validator.validate(model);
+            assertTrue(result.isValid());
+        }
+
+        @Test
+        void hasExactCount_should_fail_when_array_has_wrong_count() {
+            ArrayHasExactCountValidator validator = new ArrayHasExactCountValidator(5);
+            TestModel model = new TestModel("test");
+            model.setStringArray(new String[]{"a", "b", "c"});
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void hasExactCount_should_fail_when_array_is_null() {
+            ArrayHasExactCountValidator validator = new ArrayHasExactCountValidator(1);
+            TestModel model = new TestModel("test");
+            model.setStringArray(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void notEmpty_should_pass_when_array_is_not_empty() {
+            NotEmptyArrayValidator validator = new NotEmptyArrayValidator();
+            TestModel model = new TestModel("test");
+            model.setStringArray(new String[]{"item"});
+
+            ValidationResult result = validator.validate(model);
+            assertTrue(result.isValid());
+        }
+
+        @Test
+        void notEmpty_should_fail_when_array_is_empty() {
+            NotEmptyArrayValidator validator = new NotEmptyArrayValidator();
+            TestModel model = new TestModel("test");
+            model.setStringArray(new String[]{});
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+    }
+
+    // ========== CASCADE MODE TESTS ==========
+    @Nested
+    class CascadeModeTests {
+
+        @Test
+        void cascade_stop_should_stop_after_first_error() {
+            CascadeStopValidator validator = new CascadeStopValidator();
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+            assertEquals(1, result.getErrors().size());
+            assertTrue(result.getErrors().getFirst().message().contains("must not be null"));
+        }
+
+        @Test
+        void cascade_continue_should_collect_all_errors() {
+            CascadeContinueValidator validator = new CascadeContinueValidator();
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+            assertTrue(result.getErrors().size() >= 2);
+        }
+
+        @Test
+        void cascade_stop_with_valid_value_should_continue_all_rules() {
+            CascadeStopValidator validator = new CascadeStopValidator();
+            TestModel model = new TestModel("valid");
+
+            ValidationResult result = validator.validate(model);
+            assertTrue(result.isValid());
+        }
+    }
+
+    // ========== NULL VALUE TESTS ==========
+    @Nested
+    class NullValueTests {
+
+        @Test
+        void greaterThan_should_fail_when_value_is_null() {
+            GreaterThanNullValidator validator = new GreaterThanNullValidator();
+            TestModel model = new TestModel("test");
+            model.setAge(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void lessThan_should_fail_when_value_is_null() {
+            LessThanNullValidator validator = new LessThanNullValidator();
+            TestModel model = new TestModel("test");
+            model.setAge(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void length_should_fail_when_value_is_null() {
+            LengthNullValidator validator = new LengthNullValidator();
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void contains_should_fail_when_string_is_null() {
+            ContainsNullValidator validator = new ContainsNullValidator();
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void contains_should_fail_when_collection_is_null() {
+            ContainsCollectionNullValidator validator = new ContainsCollectionNullValidator();
+            TestModel model = new TestModel("test");
+            model.setList(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+    }
+
+    // ========== CONDITIONAL VALIDATION TESTS ==========
+    @Nested
+    class ConditionalValidationTests {
+
+        @Test
+        void when_condition_true_should_execute_validation() {
+            ConditionalValidationValidator validator = new ConditionalValidationValidator();
+            TestModel model = new TestModel("test");
+            model.setActive(true);
+            model.setAge(16);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+            assertTrue(result.getErrors().stream()
+                    .anyMatch(error -> error.property().equals("age")));
+        }
+
+        @Test
+        void when_condition_false_should_skip_validation() {
+            ConditionalValidationValidator validator = new ConditionalValidationValidator();
+            TestModel model = new TestModel(null);
+            model.setActive(false);
+            model.setAge(16);
+
+            ValidationResult result = validator.validate(model);
+
+            assertTrue(result.isValid());
+        }
+
+        @Test
+        void unless_condition_true_should_skip_validation() {
+            ConditionalValidationValidator validator = new ConditionalValidationValidator();
+            TestModel model = new TestModel("not null");
+            model.setActive(true);
+            model.setAge(20);
+
+            ValidationResult result = validator.validate(model);
+            assertTrue(result.isValid());
+        }
+
+        @Test
+        void unless_condition_false_should_execute_validation() {
+            ConditionalValidationValidator validator = new ConditionalValidationValidator();
+            TestModel model = new TestModel("test");
+            model.setActive(false);
+            model.setValue("not null");
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+    }
+
+    // ========== NUMERIC EDGE CASE TESTS ==========
+    @Nested
+    class NumericEdgeCaseTests {
+
+        @Test
+        void isDivisibleBy_should_fail_when_value_is_null() {
+            IsDivisibleByNullValidator validator = new IsDivisibleByNullValidator();
+            TestModel model = new TestModel("test");
+            model.setAge(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void isEven_should_fail_when_value_is_null() {
+            IsEvenNullValidator validator = new IsEvenNullValidator();
+            TestModel model = new TestModel("test");
+            model.setAge(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void isOdd_should_fail_when_value_is_null() {
+            IsOddNullValidator validator = new IsOddNullValidator();
+            TestModel model = new TestModel("test");
+            model.setAge(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void isPositive_with_zero_should_fail() {
+            IsPositiveWithZeroValidator validator = new IsPositiveWithZeroValidator();
+            TestModel model = new TestModel("test");
+            model.setAge(0);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void isNegative_with_zero_should_fail() {
+            IsNegativeWithZeroValidator validator = new IsNegativeWithZeroValidator();
+            TestModel model = new TestModel("test");
+            model.setAge(0);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+    }
+
+    // ========== STRING EDGE CASE TESTS ==========
+    @Nested
+    class StringEdgeCaseTests {
+
+        @Test
+        void startsWith_should_fail_when_value_is_null() {
+            StartsWithNullValidator validator = new StartsWithNullValidator();
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void endsWith_should_fail_when_value_is_null() {
+            EndsWithNullValidator validator = new EndsWithNullValidator();
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void matches_should_fail_when_value_is_null() {
+            MatchesNullValidator validator = new MatchesNullValidator();
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+
+        @Test
+        void containsPattern_should_fail_when_value_is_null() {
+            ContainsPatternNullValidator validator = new ContainsPatternNullValidator();
+            TestModel model = new TestModel(null);
+
+            ValidationResult result = validator.validate(model);
+            assertFalse(result.isValid());
+        }
+    }
 }

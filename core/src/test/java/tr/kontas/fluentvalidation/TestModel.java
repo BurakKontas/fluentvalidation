@@ -3,6 +3,7 @@ package tr.kontas.fluentvalidation;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class TestModel {
     private String value;
@@ -15,6 +16,9 @@ public class TestModel {
     private Integer port;
     private Double percentage;
     private Boolean active;
+    private Map<String, String> map;
+    private String[] stringArray;
+    private Integer[] intArray;
 
     public TestModel(String value) {
         this.value = value;
@@ -98,5 +102,29 @@ public class TestModel {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Map<String, String> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<String, String> map) {
+        this.map = map;
+    }
+
+    public String[] getStringArray() {
+        return stringArray;
+    }
+
+    public void setStringArray(String[] stringArray) {
+        this.stringArray = stringArray;
+    }
+
+    public Integer[] getIntArray() {
+        return intArray;
+    }
+
+    public void setIntArray(Integer[] intArray) {
+        this.intArray = intArray;
     }
 }

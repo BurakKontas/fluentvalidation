@@ -2,8 +2,7 @@ package tr.kontas.fluentvalidation.rule;
 
 import tr.kontas.fluentvalidation.dtos.PasswordMessages;
 import tr.kontas.fluentvalidation.enums.CascadeMode;
-import tr.kontas.fluentvalidation.validation.ValidationResult;
-import tr.kontas.fluentvalidation.validation.ValidationStep;
+import tr.kontas.fluentvalidation.validation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -66,6 +65,9 @@ public class RuleBuilder<T, R> {
     private final String propertyName;
     private final List<ValidationStep<R>> steps = new ArrayList<>();
 
+    private final List<ConditionalStep<T, R>> conditionalSteps = new ArrayList<>();
+    private ConditionalStep<T, R> lastConditionalStep;
+
     private CascadeMode cascadeMode = CascadeMode.CONTINUE;
     private ValidationStep<R> lastStep;
 
@@ -78,6 +80,21 @@ public class RuleBuilder<T, R> {
     public RuleBuilder(String propertyName, Function<T, R> propertyAccessor) {
         this.propertyName = propertyName;
         this.propertyAccessor = propertyAccessor;
+    }
+
+    /// Only for internal use
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    /// Only for internal use
+    public Function<T, R> getPropertyAccessor() {
+        return propertyAccessor;
+    }
+
+    /// Only for internal use
+    public CascadeMode getCascadeMode() {
+        return cascadeMode;
     }
 
     /**
@@ -113,34 +130,86 @@ public class RuleBuilder<T, R> {
         ValidationStep<R> step = new ValidationStep<>(predicate, message);
         steps.add(step);
         lastStep = step;
+        lastConditionalStep = null; // Clear conditional step reference
         return this;
     }
 
     /**
-     * Overrides the default error message for the most recently added validation rule.
-     * Must be called immediately after a validation rule.
+     * Adds a validation rule that only executes when the condition is true.
      *
-     * @param message The custom error message
-     * @return This RuleBuilder for chaining
-     * @throws IllegalStateException if called before any validation rule
-     *
-     * <br><p><b>Example usage:</b></p>
+     * <p><b>Example:</b></p>
      * <pre>
      * {@code
-     * ruleFor(User::getEmail)
-     *     .notNull()
-     *     .withMessage("Email is required");
+     * ruleFor(User::getAge)
+     *     .when(user -> user.getCountry().equals("US"))
+     *     .greaterThanOrEqualTo(21)
+     *     .withMessage("Must be 21+ in the US");
+     *
+     * ruleFor(User::getPhone)
+     *     .when(user -> user.getCountry().equals("TR"))
+     *     .matches("^\\+90\\d{10}$");
      * }
      * </pre>
+     *
+     * @param condition Predicate that determines if validation should run
+     * @return ConditionalValidation wrapper for chaining
+     */
+    public ConditionalValidation<T, R> when(Predicate<T> condition) {
+        return new ConditionalValidation<>(this, condition, true);
+    }
+
+    /**
+     * Adds a validation rule that only executes when the condition is false.
+     *
+     * <p><b>Example:</b></p>
+     * <pre>
+     * {@code
+     * ruleFor(User::getMiddleName)
+     *     .unless(user -> user.hasMiddleName())
+     *     .isNull()
+     *     .withMessage("Middle name must be null if not provided");
+     *
+     * ruleFor(Order::getShippingAddress)
+     *     .unless(order -> order.isPickup())
+     *     .notNull();
+     * }
+     * </pre>
+     *
+     * @param condition Predicate that determines if validation should be skipped
+     * @return ConditionalValidation wrapper for chaining
+     */
+    public ConditionalValidation<T, R> unless(Predicate<T> condition) {
+        return new ConditionalValidation<>(this, condition, false);
+    }
+
+    /// Only for internal use
+    public void mustWithEntityCondition(Predicate<T> entityCondition,
+                                        boolean shouldValidateWhenTrue,
+                                        Predicate<R> predicate,
+                                        String message) {
+        ConditionalStep<T, R> step = new ConditionalStep<>(
+                entityCondition, shouldValidateWhenTrue, predicate, message
+        );
+        conditionalSteps.add(step);
+        lastConditionalStep = step;
+        lastStep = null; // Clear regular step reference
+    }
+
+    /**
+     * Override withMessage to support both regular and conditional steps
      */
     public RuleBuilder<T, R> withMessage(String message) {
-        if (lastStep == null) {
-            throw new IllegalStateException(
-                    "withMessage() must be called after a validation rule"
-            );
+        if (lastConditionalStep != null) {
+            lastConditionalStep.setMessage(message);
+            return this;
         }
-        lastStep.setMessage(message);
-        return this;
+        if (lastStep != null) {
+            lastStep.setMessage(message);
+            return this;
+        }
+        throw new IllegalStateException(
+                "withMessage() must be called after a validation rule"
+        );
     }
 
     /**
@@ -153,16 +222,24 @@ public class RuleBuilder<T, R> {
     public void validate(T target, ValidationResult result) {
         R value = propertyAccessor.apply(target);
 
+        // Execute regular validation steps first
         for (ValidationStep<R> step : steps) {
             if (!step.isValid(value)) {
-
-                result.addError(
-                        propertyName,
-                        step.getMessage()
-                );
-
+                result.addError(propertyName, step.getMessage());
                 if (cascadeMode == CascadeMode.STOP) {
                     return;
+                }
+            }
+        }
+
+        // Execute conditional validation steps
+        for (ConditionalStep<T, R> step : conditionalSteps) {
+            if (step.shouldExecute(target)) {
+                if (!step.isValid(value)) {
+                    result.addError(propertyName, step.getMessage());
+                    if (cascadeMode == CascadeMode.STOP) {
+                        return;
+                    }
                 }
             }
         }

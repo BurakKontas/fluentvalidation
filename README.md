@@ -282,6 +282,286 @@ ruleFor(Order::getTotal)
           "Total must be positive");
 ```
 
+## Conditional Validation
+
+Add conditional logic to your validation rules using `when()` and `unless()` methods.
+
+### Basic Usage
+
+```java
+ruleFor(User::getAge)
+    .when(User::isActive)          // Only validate if user is active
+    .greaterThanOrEqualTo(18)
+    .withMessage("Active users must be 18 or older");
+
+ruleFor(User::getMiddleName)
+    .unless(User::hasMiddleName)   // Only validate if user doesn't have middle name
+    .isNull()
+    .withMessage("Middle name must be null if not provided");
+```
+
+### `when()` - Conditional Validation
+
+The `when()` method ensures a validation rule only executes when the specified condition is `true`.
+
+#### Syntax
+```java
+.when(Predicate<T> condition)
+```
+
+#### Examples
+
+**Example 1: Business rule validation**
+```java
+ruleFor(Order::getShippingAddress)
+    .when(Order::requiresShipping)   // Only validate if shipping is required
+    .notNull()
+    .withMessage("Shipping address is required");
+```
+
+**Example 2: Country-specific validation**
+```java
+ruleFor(User::getPhoneNumber)
+    .when(user -> "US".equals(user.getCountry()))
+    .matches("^\\+1\\d{10}$")
+    .withMessage("US phone numbers must start with +1");
+```
+
+**Example 3: Multiple conditions**
+```java
+ruleFor(Product::getDiscountPrice)
+    .when(product -> product.isOnSale() && product.hasDiscount())
+    .lessThan(product -> product.getOriginalPrice())
+    .withMessage("Discount price must be lower than original price");
+```
+
+### `unless()` - Skip Validation Conditionally
+
+The `unless()` method ensures a validation rule only executes when the specified condition is `false` (skip validation when condition is `true`).
+
+#### Syntax
+```java
+.unless(Predicate<T> condition)
+```
+
+#### Examples
+
+**Example 1: Skip validation for specific cases**
+```java
+ruleFor(User::getMiddleName)
+    .unless(User::isRequiredToHaveMiddleName)  // Skip if middle name is optional
+    .isNull()
+    .withMessage("Middle name should be null if optional");
+```
+
+**Example 2: Skip validation for administrators**
+```java
+ruleFor(User::getPassword)
+    .unless(User::isAdmin)          // Skip password validation for admins
+    .minLength(8)
+    .withMessage("Password must be at least 8 characters");
+```
+
+**Example 3: Skip validation for specific statuses**
+```java
+ruleFor(Order::getTrackingNumber)
+    .unless(order -> order.getStatus() == OrderStatus.CANCELLED)
+    .notNull()
+    .withMessage("Tracking number is required for active orders");
+```
+
+### Parameterless `unless()` - Always Skip
+
+The parameterless `unless()` method completely disables the validation rule.
+
+```java
+ruleFor(User::getLegacyField)
+    .unless()        // Never validate this field
+    .notNull();      // This rule will never be executed
+
+ruleFor(System::getDebugMode)
+    .unless()        // Skip in production
+    .isTrue();       // Only validated if unless() is not called
+```
+
+### Chaining Conditional Rules
+
+You can chain multiple conditional rules together for complex scenarios.
+
+#### Example: Complex business logic
+```java
+ruleFor(Employee::getOvertimeHours)
+    .when(Employee::isFullTime)                    // Only for full-time employees
+    .unless(Employee::isExempt)                    // Unless exempt from overtime
+    .when(emp -> emp.getWeeklyHours() > 40)        // And only if over 40 hours
+    .greaterThan(0)
+    .withMessage("Overtime hours must be tracked for eligible employees");
+```
+
+### Real-World Examples
+
+#### Example 1: E-commerce validation
+```java
+public class OrderValidator extends Validator<Order> {
+    public OrderValidator() {
+        // Payment validation
+        ruleFor(Order::getPaymentMethod)
+            .when(Order::isPaid)                   // Only validate if order is paid
+            .notNull()
+            .withMessage("Payment method is required for paid orders");
+
+        // Shipping validation
+        ruleFor(Order::getShippingAddress)
+            .unless(Order::isDigitalProduct)       // Skip for digital products
+            .notNull()
+            .withMessage("Shipping address is required for physical products");
+
+        // Discount validation
+        ruleFor(Order::getDiscountCode)
+            .when(order -> order.getTotal() > 100) // Only for orders over $100
+            .matches("^SAVE\\d{3}$")
+            .withMessage("Invalid discount code format");
+    }
+}
+```
+
+#### Example 2: User registration validation
+```java
+public class UserRegistrationValidator extends Validator<UserRegistration> {
+    public UserRegistrationValidator() {
+        // Email validation (always required)
+        ruleFor(UserRegistration::getEmail)
+            .notNull()
+            .email()
+            .withMessage("Valid email is required");
+
+        // Phone validation (conditional)
+        ruleFor(UserRegistration::getPhoneNumber)
+            .when(UserRegistration::isPhoneVerificationRequired)
+            .notNull()
+            .isPhoneNumber()
+            .withMessage("Phone number is required for verification");
+
+        // Password validation (skip for social login)
+        ruleFor(UserRegistration::getPassword)
+            .unless(UserRegistration::isSocialLogin)
+            .notNull()
+            .minLength(8)
+            .containsDigit()
+            .withMessage("Password is required and must be at least 8 characters with a digit");
+
+        // Age validation (country-specific)
+        ruleFor(UserRegistration::getBirthDate)
+            .when(user -> "US".equals(user.getCountry()))
+            .minAge(21)
+            .withMessage("You must be 21 or older in the US");
+    }
+}
+```
+
+#### Example 3: Financial transaction validation
+```java
+public class TransactionValidator extends Validator<Transaction> {
+    public TransactionValidator() {
+        // Amount validation
+        ruleFor(Transaction::getAmount)
+            .greaterThan(0)
+            .withMessage("Amount must be positive");
+
+        // Currency validation for international transfers
+        ruleFor(Transaction::getCurrency)
+            .when(Transaction::isInternational)
+            .isInEnum(Currency.class)
+            .withMessage("Valid currency is required for international transfers");
+
+        // IBAN validation for bank transfers
+        ruleFor(Transaction::getRecipientIban)
+            .when(Transaction::isBankTransfer)
+            .notNull()
+            .isIban()
+            .withMessage("Valid IBAN is required for bank transfers");
+
+        // Skip validation for internal transfers
+        ruleFor(Transaction::getRoutingNumber)
+            .unless(Transaction::isInternalTransfer)
+            .notNull()
+            .withMessage("Routing number is required for external transfers");
+    }
+}
+```
+
+### Best Practices
+
+1. **Use descriptive conditions**: Make conditions readable and self-explanatory
+2. **Combine with cascade mode**: Use `cascade(CascadeMode.STOP)` with conditional rules for performance
+3. **Keep conditions simple**: Avoid overly complex conditions in lambda expressions
+4. **Test all scenarios**: Ensure both true and false conditions are tested
+5. **Use method references**: When possible, use method references instead of lambda expressions for better readability
+
+### Common Patterns
+
+#### Pattern 1: Required field based on another field
+```java
+ruleFor(Form::getAlternateEmail)
+    .when(form -> form.getPrimaryEmail() == null)
+    .notNull()
+    .email()
+    .withMessage("Alternate email is required if primary email is not provided");
+```
+
+#### Pattern 2: Validation based on user role
+```java
+ruleFor(User::getSecurityLevel)
+    .when(User::isAdministrator)
+    .greaterThanOrEqualTo(3)
+    .withMessage("Administrators must have security level 3 or higher");
+```
+
+#### Pattern 3: Date-based conditional validation
+```java
+ruleFor(Event::getEndDate)
+    .when(event -> event.getStartDate() != null)
+    .greaterThan(event -> event.getStartDate())
+    .withMessage("End date must be after start date");
+```
+
+#### Pattern 4: Skip validation during specific operations
+```java
+public class ProductValidator extends Validator<Product> {
+    @Override
+    public boolean skip(Product product) {
+        // Skip validation during import operations
+        return product.isBeingImported();
+    }
+    
+    public ProductValidator() {
+        ruleFor(Product::getPrice)
+            .unless()  // Will never run if skip() returns true
+            .greaterThan(0);
+    }
+}
+```
+
+### Performance Considerations
+
+1. **Condition evaluation order**: Conditions are evaluated before validation, minimizing unnecessary validations
+2. **Predicate efficiency**: Use efficient predicates for conditions, especially with large datasets
+3. **Cascade modes**: Combine with appropriate cascade modes to stop early when possible
+4. **Lazy evaluation**: Conditions are evaluated lazily, only when needed
+
+### Error Messages with Conditions
+
+You can customize error messages for conditional validations:
+
+```java
+ruleFor(User::getAge)
+    .when(User::isStudent)
+    .inclusiveBetween(18, 25)
+    .withMessage("Student age must be between 18 and 25");
+```
+
+Conditional validations provide powerful flexibility for implementing complex business rules while maintaining clean, readable validation logic.
+
 ## License
 
 GPL-3.0 License
